@@ -771,7 +771,7 @@ func (t *Taho) RunIfNeeded() {
 	t.tempDir = t.proxy.Sprintf("%s/.taho/%s/%d-%d", home, uuid, t.level, t.Num())
 	t.proxy.MkdirAll(t.tempDir)
 
-	// A number of filenames exist have special style rules.
+	// A number of filenames have special style rules.
 	specialNames := map[string]bool{
 		"backend.tf":   true,
 		"checks.tf":    true,
