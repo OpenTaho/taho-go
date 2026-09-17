@@ -19,6 +19,7 @@ type Taho struct {
 	config    *TahoConfig
 	imports   []*hclwrite.Block
 	level     int
+	locals    []*hclwrite.Block
 	main      []*hclwrite.Block
 	num       int
 	outputs   []*hclwrite.Block
@@ -335,6 +336,8 @@ func (t *Taho) ProcessFile(filename string, hasTF bool, specialNames map[string]
 						t.providers = append(t.providers, block)
 					} else if block.Type() == "variable" {
 						t.variables = append(t.variables, block)
+					} else if block.Type() == "locals" {
+						t.locals = append(t.locals, block)
 					} else if block.Type() == "output" {
 						t.outputs = append(t.outputs, block)
 					} else if isSpecial {
@@ -776,6 +779,7 @@ func (t *Taho) RunIfNeeded() {
 		"backend.tf":   true,
 		"checks.tf":    true,
 		"imports.tf":   true,
+		"locals.tf":    true,
 		"main.tf":      true,
 		"outputs.tf":   true,
 		"providers.tf": true,
@@ -806,6 +810,7 @@ func (t *Taho) RunIfNeeded() {
 		t.WriteTfFile(false, "backend.tf", t.backend)
 		t.WriteTfFile(false, "checks.tf", t.checks)
 		t.WriteTfFile(false, "import.tf", t.imports)
+		t.WriteTfFile(false, "locals.tf", t.locals)
 		t.WriteTfFile(false, "outputs.tf", t.outputs)
 		t.WriteTfFile(false, "variables.tf", t.variables)
 
